@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="">
+<head>
+  <title>Simple 360 gallery</title>
+  <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
+  <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+
+
+  <script src="./scripts/super-hands.min.js"></script>
+  <script src="./scripts/aframe-physics-system.js"></script>
+  <script src="./scripts/on-collision.js"></script>
+  <script src="./scripts/out-of-bounds-collision.js"></script>
+  <script src="./scripts/device-check.js"></script>
+  <script src="./scripts/color-sky.js"></script>
+  <script src="./scripts/spawn-position.js"></script>
+  <script src="./scripts/camera-logger.js"></script>
+  <script src="./scripts/dumb-loading.js"></script>
+  <script src="./scripts/phase-shift.js"></script>
+  <script src="./scripts/controller-toggle.js"></script>
+  <script src="./scripts/vrtoggle.js"></script>
+  <script src="./scripts/icon-toggle.js"></script>
+  <script src="./scripts/exitvr.js"></script>
+  <script src="./scripts//templates.js"></script>
+  <script src="./scripts/click-transition.js"></script>
+  <script src="./scripts/click-icon-3d.js"></script>
+  <script src="./scripts/toggle-raycast-selectable.js"></script>
+  <script src="./scripts/set-path.js"></script>
+  
+  <script src="./scripts/display-welcome-text.js"></script>
+  <script src="./scripts/icontoggle-extension.js"></script>
+  <script src="./scripts/layers.js"></script>
+
+    
+  <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>    
+  <script src="https://unpkg.com/aframe-cubemap-component@2.1.1/dist/aframe-cubemap-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-fps-counter-component/dist/aframe-fps-counter-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-render-order-component@1.0.0/dist/aframe-render-order-component.min.js"></script>
+
+
+<body>
+  
+  <!-- unused components:  fps-counter -->
+  <a-scene fps-counter 
+           vr-mode-ui="enabled: false"
+           checkdevice 
+           dumb-loading
+           vrtoggle  
+           loading-screen="dotsColor: red; backgroundColor: black"
+           physics="debug: false"
+           display-welcome-text
+           render-order="0, 1, 2, 3, 4, 5">
+      
+
+
+     
+      
+    <a-assets timeout="69000">
+
+       <a-entity id="mixins">
+
+        <a-mixin id="Mobile-Icon" material="color: red"
+              event-set__mouseenter="scale: 0.30 0.30 0.30" ;
+              event-set__mouseleave="scale: 0.25 0.25 0.25" ;
+        ></a-mixin>
+        
+        
+        <a-mixin id="PC-Icon" material="color: red"
+                 sound="src: #click-sound; volume: 1; on: click"
+                 event-set__mouseenter="scale: 0.30 0.30 0.30" 
+                 event-set__mouseleave="scale: 0.25 0.25 0.25" 
+                 position = "0 0.8 -.80"
+                 scale = "0.25 0.25 0.25"
+
+        ></a-mixin>
+        
+        <a-mixin id="Box-Collider"
+                visible="false"
+                position="0 0 -1"
+                static-body="shape: box"
+                material="opacity: 0"
+                collision-filter="group: box; collidesWith: head"
+                geometry="primitive: box; width: 0.1; height: 0.1; depth: 0.1"
+        ></a-mixin>
+
+
+
+        <!--physics-hands-->
+        <a-mixin
+                id="physics-hands"
+                physics-collider
+                phase-shift
+                collision-filter="collisionForces: false"
+                static-body="shape: sphere; sphereRadius: 0.02"
+                super-hands="colliderEvent: collisions;
+                              colliderEventProperty: els;
+                              colliderEndEvent: collisions;
+                              colliderEndEventProperty: clearedEls;
+                              grabEndButtons: [gripup, trackpadup, triggerup, gripopen, abuttonup, bbuttonup, xbuttonup, ybuttonup, pointdown, thumbdown, pointingend, pistolend, thumbstickup, mouseup, touchend]"
+        ></a-mixin>
+
+        <a-mixin  mixin id="shelf-mix" static-body material="transparent: true; opacity: 0" color="#FFFAF0" rotation="0 90 0" scale="0.3 0.1 0.3"></a-mixin>
+
+           
+           
+           
+           <!-- all interactions -->
+       <a-mixin
+               id="all-interactions"
+               droppable
+               hoverable
+               grabbable
+               stretchable
+               draggable
+               event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+               event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
+               dynamic-body
+       ></a-mixin>
+           <!-- all-interactions without dynamic-body --><a-mixin
+               id="most-interactions"
+               hoverable
+               grabbable
+               stretchable
+               draggable
+               event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+               event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
+       ></a-mixin>
+           <!--grab-move--><a-mixin
+               id="grab-move"
+               hoverable
+               grabbable
+               draggable
+               event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+               event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
+               dynamic-body
+       ></a-mixin>
+       </a-entity>
+        
+       <a-entity id="images">
+        
+       <a-entity id="iconImages">
+
+            <img
+                    id="louvre"
+                    src="https://cdn.glitch.global/955c6fa8-676e-41dd-9272-f4679a956e0f/Paris-The-Louvre-1-1024x1024.png?v=1652748615371"
+                    crossorigin="anonymous"
+                    alt="">
+
+            <img
+                    id="sky"
+                    src="https://cdn.glitch.global/df0b73db-e833-420d-9c2b-95441b2a886c/107603475-sky-vector-icon-isolated-on-transparent-background-sky-logo-concept%20(1).png?v=1652770336244"
+                    crossorigin="anonymous"
+                    alt=""
+            >
+
+            <img
+                    id="desert"
+                    src="https://cdn.glitch.global/955c6fa8-676e-41dd-9272-f4679a956e0f/desert-icon-vector-sign-symbol-isolated-white-background-desert-icon-vector-isolated-white-background-your-web-133746482.jpg?v=1652749168026"
+                    crossorigin="anonymous"
+                    color="white"
+
+                    alt="">
+
+            <img
+                    id="mountain"
+                    src="https://cdn.glitch.global/955c6fa8-676e-41dd-9272-f4679a956e0f/mountain%20(1).png?v=1652750011831"
+                    crossorigin="anonymous"
+                    alt=""
+            >
+
+
+
+
+        </a-entity>
+
+        <img id="slurm" crossorigin="anonymous" src="https://cdn.glitch.global/8ac3a419-df03-4459-a2b1-e68a6ad0245c/slurmfinal.png?v=1652126417701" alt="">
+
+        <img id="loading" crossorigin="anonymous" src="https://cdn.glitch.global/7ed8cd76-89b5-42b8-a0c9-6912a82a5d7a/loading.jpg?v=1652223888632">
+        
+        <img id="icontoggleimage" crossorigin="anonymous" src="https://cdn.glitch.global/7ed8cd76-89b5-42b8-a0c9-6912a82a5d7a/Untitledicon2.png?v=1652220937243">
+    </a-entity>
+        
+       <a-entity id="audioClips">
+      <audio
+          id="clip1"
+          crossorigin="anonymous"
+          src="https://cdn.glitch.com/ae9730ff-02ff-4d9a-90bd-14392b2f6c11%2F%5BONTIVA.COM%5D-First%20look%20at%20Virgin%20Galactic's%20VSS%20Imagine%20spaceship-64K.mp3?v=1617901135114"
+               
+        ></audio>
+      <audio
+          id="clip2"
+          crossorigin="anonymous"
+          src="https://cdn.glitch.global/b90d0258-98a4-445b-9700-4ef354f5bc9f/329022__esistnichtsoernst__war-drums-3.mp3?v=1648307865279"
+        ></audio>
+      <audio
+          id="clip3"
+          crossorigin="anonymous"
+          src="https://cdn.glitch.com/ae9730ff-02ff-4d9a-90bd-14392b2f6c11%2F%5BONTIVA.COM%5D-%5B4K%5D%20Nature%20Rain%20Free%20Stock%20Footage%20_%20No%20Copyright%20Royalty-Free-64K.mp3?v=1618318355648"
+        ></audio>
+      <audio
+          id="clip4"
+          crossorigin="anonymous"
+          src="https://cdn.glitch.com/ae9730ff-02ff-4d9a-90bd-14392b2f6c11%2F%5BONTIVA.COM%5D-Coffee%20Shop%20Sounds%20Ambience-64K.mp3?v=1617916397754"
+        ></audio>
+      <audio
+          id="clip5"
+          crossorigin="anonymous"
+          src="https://cdn.glitch.com/ae9730ff-02ff-4d9a-90bd-14392b2f6c11%2F%5BONTIVA.COM%5D-First%20look%20at%20Virgin%20Galactic's%20VSS%20Imagine%20spaceship-64K.mp3?v=1617901135114"
+        ></audio>
+          <audio id="click-sound" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
+      </a-entity>
+        
+    </a-assets>
+      
+      
+    <a-entity id="icontoggle" icon-toggle></a-entity>
+      
+
+      <!--Paths-->
+      <a-entity id="paths">
+          
+      <a-curve id="longpath" curve="closed: false; type: CatmullRom; resetonplay: false">
+          
+          <a-curve-point id="pt1" position="0 1.3 -7" curve-point=""></a-curve-point>
+          <a-curve-point id="pt2" position="0 3 -4" curve-point=""></a-curve-point>
+          <a-curve-point id="pt3" position="0 1.3 0" curve-point=""></a-curve-point>
+          
+      </a-curve>
+          
+          <a-curve id="path0" curve="closed: false; type: CatmullRom; resetonplay: true">
+
+              <a-curve-point position="-0.50 1.2 -1.42" curve-point=""></a-curve-point>
+              <a-curve-point position="-0.25 1.8 -0.72" curve-point=""></a-curve-point>
+              <a-curve-point id="p0" position="0 1.3 0" curve-point=""></a-curve-point>
+
+          </a-curve>
+
+
+      <a-curve id=path1 curve="closed: false; type: CatmullRom; resetonplay: false">
+
+          <a-curve-point id="pt1" position="0.5  1.05 -0.70" curve-point=""></a-curve-point>
+          <a-curve-point id="pt2" position="0.25 1.5  -0.35" curve-point=""></a-curve-point>
+          <a-curve-point id="p1" position="0 1.3 0" curve-point=""></a-curve-point>
+          
+      </a-curve>
+      
+      <a-curve  id=path2 curve="closed: false; type: CatmullRom; resetonplay: false">
+
+          <a-curve-point id="pt1" position="-0.5 1 -0.70" curve-point=""></a-curve-point>
+          <a-curve-point id="pt2" position="-0.25 1.5 -0.35" curve-point=""></a-curve-point>
+          <a-curve-point id="p2" position="0 1.3 0" curve-point=""></a-curve-point>
+      </a-curve>
+
+
+      <a-curve id=path3 curve="closed: false; type: CatmullRom; resetonplay: false">
+          
+          <a-curve-point id="pt1" position="0 1 -1" curve-point=""></a-curve-point>
+          <a-curve-point id="pt2" position="0 1.5 -0.5" curve-point=""></a-curve-point>
+          <a-curve-point id="p3" position="0 1.3 0" curve-point=""></a-curve-point>
+      </a-curve>
+
+      <a-curve id=path4 curve="closed: false; type: CatmullRom; resetonplay: false">
+
+          <a-curve-point id="pt1" position="0.5 1.2 -1.42" curve-point=""></a-curve-point>
+          <a-curve-point id="pt2" position="0.25 1.8 -0.72" curve-point=""></a-curve-point>
+          <a-curve-point id="p4" position="0 1.3 0" curve-point=""></a-curve-point>
+
+      </a-curve>
+
+          
+          
+      <a-curve id=path5 curve="closed: false; type: CatmullRom; resetonplay: false">
+
+          <a-curve-point id="pt1" position="0.5 1.2 -1.42" curve-point=""></a-curve-point>
+          <a-curve-point id="pt2" position="0.3 1.9 -0.71" curve-point=""></a-curve-point>
+          <a-curve-point id="p5" position="0 1.3 0" curve-point=""></a-curve-point>
+
+      </a-curve>
+      </a-entity>
+
+      <!-- drawn curves-->
+      
+      <!--
+      <a-entity id="curves">
+      <a-draw-curve curveref="#path1" material="shader: line; color: purple"></a-draw-curve>
+      <a-draw-curve curveref="#path2" material="shader: line; color: red"></a-draw-curve>
+      <a-draw-curve curveref="#path3" material="shader: line; color: green"></a-draw-curve>
+      <a-draw-curve curveref="#path4" material="shader: line; color: blue"></a-draw-curve>
+      <a-draw-curve curveref="#path0" material="shader: line; color: yellow"></a-draw-curve>
+      </a-entity>
+      -->
+      
+      <!-- Rig -->
+     <a-entity>
+        
+        <!-- Mouse Cursor -->
+        <a-entity class="raycasting" cursor="rayOrigin:mouse" raycaster="objects: .Icons2D, .Icons3D, .toggle"></a-entity>
+        
+        <a-camera position="0 1.3 0" id="cam" wasd-controls-enabled="false" look-controls-enabled="false">
+          
+          <!-- screenspace objects get added to "screenSpaceIcons2D"...-->
+          <a-entity id="screenSpaceIcons2D"></a-entity>
+        
+        </a-camera>
+        
+        <a-entity id="hands" visible="false">
+        
+        <a-entity
+          id="lhand"
+          mixin="physics-hands"
+          hand-controls="hand: left"
+        ></a-entity>
+          
+        <a-entity 
+          id="rhand"
+          mixin="physics-hands"
+          hand-controls="hand: right"
+        ></a-entity>
+
+        </a-entity>
+        
+         <!-- .cubes, .Icons2D, .toggle -->
+        <a-entity id="controllers" visible="true">
+        <a-entity  class="raycasting" controller-toggle laser-controls="hand: right" raycaster="objects: .none, .Icons2D " ></a-entity> <!--"objects: .Icons2D, .Icons3D" -->
+          
+        <a-entity laser-controls="hand: left"  raycaster="objects: .none" ></a-entity>
+        </a-entity>
+</a-entity>
+      
+      
+    <!-- lights --> 
+    <a-entity id="lights">
+    <a-entity light="type: ambient; color: #BBB"></a-entity>
+        
+        
+    <!-- animated light -->
+    <a-light
+            id="light"  light="type: directional; color: #FFF; intensity: 0.0" position="-0.5 1 1"
+            animation="property: intensity; from: 0.0; to: 0.8; dur: 2000; easing: easeInOutSine; loop: false; startEvents: startscene">
+    </a-light>
+    </a-entity>
+      
+    <!-- 2D Icons-->
+    <a-entity visible=false" id="Icons2D"></a-entity>
+      
+    <!-- LAYERS --> <!-- the best layer switching method is prob using A-Frames "render-layer component" or directly switching threejs render layer property ) -->  
+      
+   <a-entity id="L1" visible="true">
+       <a-entity cubemap="folder: ./assets/cubemaps/desert-cube/"></a-entity>
+        <!-- hide and reveal entities here    -->
+   </a-entity>
+  
+   <a-entity id="L2" visible="false">
+       <a-entity cubemap="folder: ./assets/cubemaps/snow-cube/"></a-entity>
+       <!-- hide and reveal entities here    -->   
+   </a-entity>
+
+   <a-entity id="L3" visible="false">
+       <a-entity cubemap="folder: ./assets/cubemaps/mountain-cube/"></a-entity>
+       <!-- hide and reveal entities here    -->
+   </a-entity>
+
+   <a-entity id="L4" visible="false">
+       <a-entity cubemap="folder: ./assets/cubemaps/louvre-cube/"></a-entity>
+       <!-- hide and reveal entities here    -->
+   </a-entity>
+     
+   <a-entity id="L5" visible="false">
+       <a-entity cubemap="folder: ./assets/cubemaps/sky-cube/"></a-entity>
+       <!-- hide and reveal entities here    -->
+   </a-entity>
+      
+   <a-entity id="L6" visible="true">
+          <a-entity cubemap="folder: ./assets/cubemaps/firstcube/; ext: png"></a-entity>
+
+          <a-entity id="text"
+                    text="value:Welcome!; color: #d64161; shader: msdf; font: https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/exo2/Exo2-Light.json; align: center"
+                    position="0 1.3 -2.7 "
+                    scale="8 8 8"
+                    animation__title="property: position; to: 0 1.3 -2.8; dur: 2000; easing: linear; startEvents: set"
+          >
+          </a-entity>
+
+          <a-entity visible="false" id="text2"  text="value: 360° Gallery; color: #d64161; shader: msdf; 
+                      font: https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/exo2/Exo2-Light.json;
+                      align: center" scale="6 6 6"  position="0 0.8 -5 " ></a-entity>
+          <!--
+      
+            you can show and hide objects, lights, and other things in synthetic "layers"   
+      
+            -->
+      </a-entity>
+      
+      
+      <!-- 3D Icons/ grabbable cubemaps -->
+    <a-entity id="Icons3D" toggle-raycast-selectable visible="" > 
+        
+                <a-entity
+                id="mountainCube"
+                spawn-position="position: -0.6 1.8 -0.2; rotation: 15"
+                dynamic-body
+                grabbable
+                scale="0.05 0.05 0.05"
+                cubemap="folder: ./assets/cubemaps/mountain-cube/; edgeLength: 5"
+                position="-0.6 1.6 -0.2"
+                animation ="property: rotation;from:0 0 0; to: 30 0 0; loop: false; dur: 1100; startEvents: animate"
+                render-order="0"
+                class="Icons3D"
+                ><a-entity id="c3" color-sky="layer: 3; delay: false" mixin="Box-Collider"></a-entity> <!--collider-->
+                </a-entity>
+        
+                <a-entity 
+                id="skyCube"
+                grabbable
+                dynamic-body
+                spawn-position ="position: 0.5  1.15 -0.70; rotation: 55" 
+                cubemap="folder: ./assets/cubemaps/sky-cube/; edgeLength: 5"
+                position="0.5  1 -0.70"
+                scale="0.05 0.05 0.05"
+                class="Icons3D"
+                animation ="property: rotation; from:0 0 0; to: -90 0 0; loop: false; dur: 1400; startEvents: animate"
+                render-order="1"
+                ><a-entity id="c5" color-sky="layer: 5; delay: false" mixin="Box-Collider"></a-entity><!--collider-->
+                </a-entity>
+             
+                <a-entity
+                id="desertCube"
+                dynamic-body
+                grabbable
+                spawn-position ="position:-0.5 1.15 -0.70; rotation: -55"
+                cubemap="folder: ./assets/cubemaps/desert-cube/; edgeLength: 5"
+                position="-0.5 1 -0.70"
+                scale="0.05 0.05 0.05"
+                class="Icons3D"
+                animation ="property: rotation;from:0 0 0; to: -90 0 0; loop: false; dur: 100; startEvents: animate"
+                animation__2 ="property: rotation;from:0 0 0; to: 0 0 -20; loop: false; dur: 1000; startEvents: animationcomplete"
+                render-order="1"
+                ><a-entity id="c1" color-sky="layer: 1; delay: false" mixin="Box-Collider"></a-entity> <!--collider-->
+                </a-entity>
+    
+                <a-entity
+                material="transparent: true"
+                class="Icons3D"
+                id="snowCube"
+                dynamic-body
+                grabbable
+                spawn-position = "position: 0 1.15 -1; rotation: 0 " 
+                cubemap="folder: ./assets/cubemaps/snow-cube/; edgeLength: 5"
+                position="0 1 -1"
+                scale="0.05 0.05 0.05"
+                animation = "property: rotation;from: 0 0 0; to: 0 20 0; loop: false; dur: 600; startEvents: animate"
+                animation__2 = "property: scale; to: 0.5 0.1 0.5; loop: false; dur: 1000; startEvents: animate"
+                animation__3 = "property: scale; to: 0.05 0.05 0.05; loop: false; dur: 1000; startEvents: animationcomplete__2"
+                render-order="1"
+                ><a-entity id="c2" color-sky="layer: 2; delay: false" mixin="Box-Collider"></a-entity> <!--collider-->
+                </a-entity>
+        
+                <a-entity
+                id="louvreCube"
+                class="Icons3D"
+                grabbable 
+                dynamic-body
+                spawn-position ="position: 0.6 1.6 -0.2; rotation: -15"
+                cubemap="folder: ./assets/cubemaps/louvre-cube/; edgeLength: 5"
+                position="0.6 1.6 -0.2"
+                scale="0.05 0.05 0.05"
+                animation ="property: rotation;from:0 0 0; to: 30 0 0; loop: false; dur: 1100; startEvents: animate"
+                render-order="0"
+                ><a-entity id="c4" color-sky="layer: 4; delay: false" mixin="Box-Collider"></a-entity> <!--collider-->
+                </a-entity>
+      
+   
+    
+    
+    </a-entity>
+      
+    <!-- rename animations and animation startEvents-->
+     <a-sky 
+      id="transitionSphere"
+      radius="10"
+      material="opacity: 1; transparent: true" color="#f4f4f4"
+      position="0 1.690 0" rotation="0 90 -2"
+      animation__fadein="property: components.material.material.opacity; type: isRawProperty; from: 0; to: 1; dur: 350; startEvents: transition"
+      animation__fadeback="property: components.material.material.opacity; type: isRawProperty; from: 1; to: 0;delay:100; dur: 350; startEvents: animationcomplete__fadein"
+      animation__landingpagefadein="property: components.material.material.opacity; type: isRawProperty; from: 1; to: 0.0; dur: 1000; startEvents: fadeinscene"
+     ></a-sky>
+
+      
+    <!-- Invisible shelves for Rigidbody Icons-->
+    <a-entity visible="false" id="shelves">
+    <a-box id="shelf"  mixin="shelf-mix" position="-0.6 1.3 -0.2" ></a-box> <!--  vr position="-0.6 1.1 -0.2" -->
+    <a-box id="shelf2" mixin="shelf-mix" position="-0.5 0.8 -0.70" ></a-box>
+    <a-box id="shelf3" mixin="shelf-mix" position="0 0.7 -1" ></a-box>
+    <a-box id="shelf4" mixin="shelf-mix" position = "0.5 0.8 -0.70"></a-box>
+    <a-box id="shelf5" mixin="shelf-mix" position = "0.6 1.3 -0.2"></a-box> <!--  vr position="0.6 1.1 -0.2" -->
+    </a-entity>
+
+    <!-- misc -->
+    <a-cylinder animation="property: rotation; to: 0 360 0; loop: true; dur: 50000" id="spinny-ground" position="0 -1.5 0" material="src: #slurm; offset: 0.2 0.06; repeat: 0.6 0.8; shader: flat" geometry=""></a-cylinder>
+    
+    <a-box visible="false" id="Ground-Collider" scale="30 0.5 30" position="0 -3 0" 
+           material="transparent: true; opacity: 0" 
+           static-body physics-collider 
+           out-of-bounds-collision collision-filter="group: head; collidesWith: box"></a-box>
+      
+    <!-- head collider + camera following script,  (quest 2 dimensions = "0.19 0.1 0.142") -->
+    <a-box id="head" visible="false" 
+           static-body physics-collider on-collision 
+           collision-filter="group: head; collidesWith: box" 
+           camera-logger position="0 0 0" scale="0.19 0.1 0.142"></a-box> 
+        
+  </a-scene>
+  
+  
+  
+
+</body>
+</html>
