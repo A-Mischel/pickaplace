@@ -95,6 +95,14 @@
             PCIcon3.setAttribute("set-pc-icon", "");
             PCIcon4.setAttribute("set-pc-icon", "");
             PCIcon5.setAttribute("set-pc-icon", "");
+            
+            //pc icon set images
+
+            PCIcon.setAttribute("material", "src: #DesertThumb; color: #FFF" );
+            PCIcon2.setAttribute("material", "src: #SnowThumb; color: #FFF;" );
+            PCIcon3.setAttribute("material", "src: #MountainThumb; color: #FFF" );
+            PCIcon4.setAttribute("material", "src: #LouvreThumb; color: #FFF" );
+            PCIcon5.setAttribute("material", "src: #SkyThumb; color: #FFF" );
       
           
             
