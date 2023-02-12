@@ -260,6 +260,13 @@
               PCIcon4.setAttribute("class", "Icons2D");
               PCIcon5.setAttribute("class", "Icons2D");
 
+              // add thumbnails to icons
+              PCIcon.setAttribute("material", "src: #DesertThumb; color: #FFF" );
+              PCIcon2.setAttribute("material", "src: #SnowThumb; color: #FFF;" );
+              PCIcon3.setAttribute("material", "src: #MountainThumb; color: #FFF" );
+              PCIcon4.setAttribute("material", "src: #LouvreThumb; color: #FFF" );
+              PCIcon5.setAttribute("material", "src: #SkyThumb; color: #FFF" );
+
               //Icon parents, this is for the animation, again prob not the right way to do this...
               ip.setAttribute("position", "0 0 -0.34");
 
