@@ -5,7 +5,7 @@ AFRAME.registerComponent('click-icon-3d', {
         let el = this.el;
         let data = this.data;
         let target = document.querySelector("#p" + data);
-
+        const audioplayer = document.querySelector("#audioplayer");
         el.addEventListener('click', function (evt) {
             let cursor = evt.detail.cursorEl.getAttribute("class");
             if(cursor != "raycasting") return;
@@ -15,6 +15,10 @@ AFRAME.registerComponent('click-icon-3d', {
             el.emit("animate");
             let string = "curve: #path" + data + "; dur: 1500; loop: false; easing: easeInCirc"
             el.setAttribute("alongpath", string);
+            audioplayer.components.sound.stopSound();
+            audioplayer.setAttribute("sound", "src: #clip" + data);
+            audioplayer.emit("play");
+            console.log(data)
             
         });
     }

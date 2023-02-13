@@ -189,30 +189,29 @@
         
        <a-entity id="audioClips">
       <audio
+          id="clip0"
+          crossorigin="anonymous"
+          src="assets/Audio/c.wav"
+        ></audio>
+      <audio
           id="clip1"
           crossorigin="anonymous"
-          src="https://cdn.glitch.com/ae9730ff-02ff-4d9a-90bd-14392b2f6c11%2F%5BONTIVA.COM%5D-First%20look%20at%20Virgin%20Galactic's%20VSS%20Imagine%20spaceship-64K.mp3?v=1617901135114"
-               
+          src="assets/Audio/b.wav"
         ></audio>
       <audio
           id="clip2"
           crossorigin="anonymous"
-          src="https://cdn.glitch.global/b90d0258-98a4-445b-9700-4ef354f5bc9f/329022__esistnichtsoernst__war-drums-3.mp3?v=1648307865279"
+          src="assets/Audio/e.wav"
         ></audio>
       <audio
           id="clip3"
           crossorigin="anonymous"
-          src="https://cdn.glitch.com/ae9730ff-02ff-4d9a-90bd-14392b2f6c11%2F%5BONTIVA.COM%5D-%5B4K%5D%20Nature%20Rain%20Free%20Stock%20Footage%20_%20No%20Copyright%20Royalty-Free-64K.mp3?v=1618318355648"
+          src="assets/Audio/g.wav"
         ></audio>
       <audio
           id="clip4"
           crossorigin="anonymous"
-          src="https://cdn.glitch.com/ae9730ff-02ff-4d9a-90bd-14392b2f6c11%2F%5BONTIVA.COM%5D-Coffee%20Shop%20Sounds%20Ambience-64K.mp3?v=1617916397754"
-        ></audio>
-      <audio
-          id="clip5"
-          crossorigin="anonymous"
-          src="https://cdn.glitch.com/ae9730ff-02ff-4d9a-90bd-14392b2f6c11%2F%5BONTIVA.COM%5D-First%20look%20at%20Virgin%20Galactic's%20VSS%20Imagine%20spaceship-64K.mp3?v=1617901135114"
+          src="assets/Audio/bh.wav"
         ></audio>
           <audio id="click-sound" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
       </a-entity>
@@ -408,7 +407,7 @@
                 animation ="property: rotation;from:0 0 0; to: 30 0 0; loop: false; dur: 1100; startEvents: animate"
                 render-order="0"
                 class="Icons3D"
-                ><a-entity id="c3" color-sky="layer: 3; delay: false" mixin="Box-Collider"></a-entity> <!--collider-->
+                ><a-entity id="c3" color-sky="layer: 3; delay: false" mixin="Box-Collider" ></a-entity> <!--collider-->
                 </a-entity>
         
                 <a-entity 
@@ -510,6 +509,14 @@
            static-body physics-collider on-collision 
            collision-filter="group: head; collidesWith: box" 
            camera-logger position="0 0 0" scale="0.19 0.1 0.142"></a-box> 
+      
+      <!-- Audio Player -->
+      
+      <a-entity id="audioplayer"                
+                sound="src: #click-sound; volume: 1; on: play"
+                animation__fadeout="property:sound.volume; to: 0.1; dur: 1500; easing: easeInSine; startEvents:fade-out"
+                
+      ></a-entity>
         
   </a-scene>
   
