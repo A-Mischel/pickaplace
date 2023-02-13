@@ -21,6 +21,7 @@
             el.setAttribute("position", newposition);
             el.setAttribute("rotation", newrotation);
             el.setAttribute("dynamic-body", "mass: 40");
+            el.setAttribute("class", "Icons3D");
           });
         },
       });

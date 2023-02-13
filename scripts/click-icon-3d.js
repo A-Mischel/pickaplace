@@ -15,6 +15,7 @@ AFRAME.registerComponent('click-icon-3d', {
             el.emit("animate");
             let string = "curve: #path" + data + "; dur: 1500; loop: false; easing: easeInCirc"
             el.setAttribute("alongpath", string);
+            el.removeAttribute("class", "Icons3D");
             audioplayer.components.sound.stopSound();
             audioplayer.setAttribute("sound", "src: #clip" + data);
             audioplayer.emit("play");
