@@ -15,6 +15,25 @@
           iconToggleButton.setAttribute("icontoggle-extension", "");
           iconToggleButton.setAttribute("class","toggle");
           iconToggleButton.setAttribute("id","toggler");
+          let text = document.createElement("a-entity")
+          text.setAttribute("text", "value: 2D; align: center");
+          text.setAttribute("position", "-0.090 -0.2 0.042");
+          text.setAttribute("scale", "4 4 4");
+          text.setAttribute("rotation", "0 25 0");
+          let text2 = document.createElement("a-entity")
+          text2.setAttribute("text", "value: 3D; align: center");
+          text2.setAttribute("position", "0.090 -0.4 0.042");
+          text2.setAttribute("scale", "4 4 4");
+          text2.setAttribute("rotation", "0 25 0");
+          let text3 = document.createElement("a-entity")
+          text3.setAttribute("text", "value: /; align: center");
+          text3.setAttribute("position", "-0.009 -0.325 0.078");
+          text3.setAttribute("scale", "4 8 4");
+          text3.setAttribute("rotation", "0 25 -30");
+          iconToggleButton.appendChild(text);
+          iconToggleButton.appendChild(text2);
+          iconToggleButton.appendChild(text3);
+
           document.querySelector("#cam").appendChild(iconToggleButton);
       }
 
