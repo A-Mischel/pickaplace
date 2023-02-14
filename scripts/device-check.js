@@ -224,6 +224,12 @@
              mobileIcon5.setAttribute("scale", "0.25 0.25 0.25");
              mobileIcon5.setAttribute("onclick", "setLayer5()");
              mobileIcon5.setAttribute("class", "Icons2D");
+
+            mobileIcon.setAttribute("material", "src: #DesertThumb; color: #FFF" );
+            mobileIcon2.setAttribute("material", "src: #SnowThumb; color: #FFF;" );
+            mobileIcon3.setAttribute("material", "src: #MountainThumb; color: #FFF" );
+            mobileIcon4.setAttribute("material", "src: #LouvreThumb; color: #FFF" );
+            mobileIcon5.setAttribute("material", "src: #SkyThumb; color: #FFF" );
             
              cam.appendChild(mobileIcon);
              cam.appendChild(mobileIcon2);
