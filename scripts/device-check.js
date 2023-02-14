@@ -9,8 +9,9 @@
       let CreateIconToggle = function(){ //creates icon toggle 2d widget and then adds it as a child to the camera object
           let iconToggleButton = document.createElement("a-entity")
           iconToggleButton.setAttribute("geometry", "primitive: plane; height: 1; width: 0.5" );
-          iconToggleButton.setAttribute("event-set__mousedown","position: 2 1.63 -2");
-          iconToggleButton.setAttribute("event-set__mouseup","position: 2 1.7 -2");
+//        Animation causing lag will add bag after performance tuning
+//        iconToggleButton.setAttribute("event-set__mousedown","position: 2 1.63 -2");
+//        iconToggleButton.setAttribute("event-set__mouseup","position: 2 1.7 -2");
           iconToggleButton.setAttribute("position", "2 1.7 -2");
           iconToggleButton.setAttribute("material","color: blue");
           iconToggleButton.setAttribute("rotation", "0 -25 0");
