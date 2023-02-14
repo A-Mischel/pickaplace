@@ -231,6 +231,9 @@
             mobileIcon4.setAttribute("material", "src: #LouvreThumb; color: #FFF" );
             mobileIcon5.setAttribute("material", "src: #SkyThumb; color: #FFF" );
             
+            //make the floor lower so icons don't touch it
+            let ground = document.getElementById("spinny-ground");
+             ground.setAttribute("position.y", "-3" );
              cam.appendChild(mobileIcon);
              cam.appendChild(mobileIcon2);
              cam.appendChild(mobileIcon3);
