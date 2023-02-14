@@ -233,7 +233,7 @@
             
             //make the floor lower so icons don't touch it
             let ground = document.getElementById("spinny-ground");
-             ground.setAttribute("position", "0 -3 0" );
+             ground.setAttribute("position", "2 -10 0" );
              
              cam.appendChild(mobileIcon);
              cam.appendChild(mobileIcon2);
